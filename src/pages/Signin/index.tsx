@@ -9,7 +9,7 @@ import Input from '../../components/Input';
 import { Background, Container, Content } from './styles';
 import getValidationsErrors from '../../utils/getValidationsErrors';
 
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/AuthContext';
 
 interface SignInFormData {
   email: string;
