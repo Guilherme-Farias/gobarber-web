@@ -1,5 +1,4 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import { tokenToString } from 'typescript';
 import api from '../services/api';
 
 interface AuthState {
@@ -9,6 +8,7 @@ interface AuthState {
 interface AuthContextData {
   user: any;
   signIn(credentials: SignInCredentials): Promise<void>;
+  signOut(): void;
 }
 
 interface SignInCredentials {
@@ -50,7 +50,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
