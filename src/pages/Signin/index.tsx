@@ -22,7 +22,7 @@ const SignIn: React.FC = () => {
 
   const { user, signIn } = useAuth();
   console.log(user);
-  const { addToast, removeToast } = useToast();
+  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -54,7 +54,7 @@ const SignIn: React.FC = () => {
         });
       }
     },
-    [signIn, addToast, removeToast],
+    [signIn, addToast],
   );
   return (
     <Container>
