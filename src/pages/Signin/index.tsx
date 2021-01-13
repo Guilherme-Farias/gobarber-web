@@ -9,7 +9,8 @@ import Input from '../../components/Input';
 import { Background, Container, Content } from './styles';
 import getValidationsErrors from '../../utils/getValidationsErrors';
 
-import { useAuth } from '../../hooks/AuthContext';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 
 interface SignInFormData {
   email: string;
@@ -21,6 +22,7 @@ const SignIn: React.FC = () => {
 
   const { user, signIn } = useAuth();
   console.log(user);
+  const { addToast, removeToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -33,16 +35,23 @@ const SignIn: React.FC = () => {
             .email('Digite um e-mail válido'),
           password: Yup.string().required('Senha obrigatória'),
         });
-        signIn({ email: data.email, password: data.password });
         await schema.validate(data, {
           abortEarly: false,
         });
+        await signIn({
+          email: data.email,
+          password: data.password,
+        });
       } catch (err) {
-        const errors = getValidationsErrors(err);
-        formRef.current?.setErrors(errors);
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationsErrors(err);
+          formRef.current?.setErrors(errors);
+        }
+        addToast();
+        removeToast();
       }
     },
-    [signIn],
+    [signIn, addToast, removeToast],
   );
   return (
     <Container>
